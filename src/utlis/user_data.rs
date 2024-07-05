@@ -82,6 +82,7 @@ pub async fn find_mint_token_program(
         let mut before: Option<Signature> = None;
     let mut max = 1000;
 
+    
     loop {
         let signatures_result = client.get_signatures_for_address_with_config(
             mint_address,
