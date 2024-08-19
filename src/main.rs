@@ -2,21 +2,17 @@ pub mod ws_client;
 pub mod event;
 pub mod new_tokens;
 pub mod utlis;
+pub mod consts;
 
-use std::str::FromStr;
-
+use consts::{RPC_URL, WS_URL};
 use event::MoonEvent;
 use new_tokens::new_tokens_prog;
-use solana_client::{ nonblocking::rpc_client::RpcClient};
-use solana_sdk::pubkey::Pubkey;
+use solana_client::nonblocking::rpc_client::RpcClient;
 use tokio_tungstenite::tungstenite::protocol::Message;
 use futures_util::StreamExt;
 use serde_json::json;
-use utlis::user_data::{get_pump_token_metadata, get_token_metadata, get_user_created_tokens};
+use utlis::user_data::get_pump_token_metadata;
 use ws_client::subscribe_experimental;
-const RPC_URL: &str = "https://mulberry.rpcpool.com/4bcd1601-da1f-401d-9b5d-5e1c84208424";
-
-const WS_URL: &str = "wss://mulberry.rpcpool.com/4bcd1601-da1f-401d-9b5d-5e1c84208424/whirligig";
 
 #[tokio::main]
 async fn main() {
@@ -48,9 +44,9 @@ async fn main() {
                 match event::parse_pump_event(message_obj.clone()).await {
                     Some(event) =>
                     match event {
-                        MoonEvent::BuyEvent(buy_event) => {
+                        MoonEvent::BuyEvent(_) => {
                         }
-                        MoonEvent::SellEvent(sell_event) => {
+                        MoonEvent::SellEvent(_) => {
                         }
                         MoonEvent::CreateEvent(create_event) => {
                             println!("{:?}", create_event);
