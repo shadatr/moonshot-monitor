@@ -98,7 +98,6 @@ pub async fn find_mint_token_program(
             println!("signatures_result {:?}", signatures_result);
             break;
         }
-        // println!("signatures_result {:?}", signatures_result.is_ok());
         let _signatures_result = signatures_result.unwrap().clone();
 
         before = Some(Signature::from_str(&_signatures_result.last().unwrap().signature).unwrap());

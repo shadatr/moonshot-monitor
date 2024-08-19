@@ -11,7 +11,7 @@ use solana_client::nonblocking::rpc_client::RpcClient;
 use tokio_tungstenite::tungstenite::protocol::Message;
 use futures_util::StreamExt;
 use serde_json::json;
-use utlis::user_data::get_pump_token_metadata;
+use utlis::user_data::{get_pump_token_metadata, get_user_created_tokens};
 use ws_client::subscribe_experimental;
 
 #[tokio::main]
@@ -33,7 +33,7 @@ async fn main() {
         }
     ]);
 
-    let (response, mut stream) = subscribe_experimental(WS_URL, method, params).await.unwrap();
+    let (_, mut stream) = subscribe_experimental(WS_URL, method, params).await.unwrap();
     
     
         while let Some(message) = stream.next().await {
@@ -52,8 +52,8 @@ async fn main() {
                             println!("{:?}", create_event);
                             let rpc_client: RpcClient = RpcClient::new(RPC_URL.to_string());
                             let token_data=get_pump_token_metadata(&create_event.uri).await.unwrap();
-                                // let token_accounts = get_user_created_tokens(create_event.sender, rpc_client).await;
-                                let token_accounts= Vec::new();
+                                let token_accounts = get_user_created_tokens(create_event.sender, rpc_client).await;
+                                // let token_accounts= Vec::new();
 
                                 println!("token_accounts {:?}", token_accounts);
                                 println!("token_data {:?}", token_data);
